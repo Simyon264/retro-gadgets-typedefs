@@ -64,6 +64,14 @@ type GamepadChipIsActiveEvent = {
     IsActive: boolean;
     Type: 'GamepadChipIsActiveEvent';
 };
+
+type VideoChipTouchEvent = {
+    TouchDown: boolean;
+    TouchUp: boolean;
+    Value: vec2;
+    Type: 'VideoChipTouchEvent';
+};
+
 type WifiWebResponseEvent = {
     RequestHandle: number;
     ResponseCode: number;
@@ -84,6 +92,7 @@ type EventSources =
     | Keypad
     | DPad
     | Stick
+    | VideoChip
     | Webcam;
 type EventTypes =
     | StickValueChangeEvent
@@ -98,6 +107,7 @@ type EventTypes =
     | KeyboardChipEvent
     | GamepadChipButtonEvent
     | GamepadChipIsActiveEvent
+    | VideoChipTouchEvent
     | WifiWebResponseEvent;
 
 type EventCallback = (sender: EventSources, arg: EventTypes) => any;

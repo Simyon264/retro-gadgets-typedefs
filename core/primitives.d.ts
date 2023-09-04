@@ -18,6 +18,26 @@ type color = __ModuleBrand & {
     R: number;
 };
 
+type PixelData = __ModuleBrand & {
+    Width: number;
+    Height: number;
+    /**
+     * Returns the color of the pixel at the coordinates specified by x and y.
+     * @param x The x coordinate of the pixel to get.
+     * @param y The y coordinate of the pixel to get.
+     * @returns The color of the pixel at the specified coordinates.
+     */
+    GetPixel(x: number, y: number): color;
+    /**
+     * Sets the color of the pixel at the coordinates specified by x and y.
+     * @param x
+     * @param y
+     * @param color
+     */
+    SetPixel(x: number, y: number, color: color): void;
+    new (width: number, height: number, color: color): PixelData;
+};
+
 declare function vec2(this: void, x: number, y: number): vec2;
 
 type vec2 = __ModuleBrand & {

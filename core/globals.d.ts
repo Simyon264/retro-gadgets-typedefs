@@ -7,6 +7,11 @@ type Desk = __ModuleBrand & {
      */
     GetLampState(this: void): boolean;
     SetLampState(this: void, state: boolean): void;
+    SetLampColor(this: void, color: color): void;
+    ShowMessage(this: void, message: string, persistent: boolean): void;
+    ShowWarning(this: void, message: string, persistent: boolean): void;
+    ShowError(this: void, message: string, persistent: boolean): void;
+    HideMessage(this: void): void;
 };
 
 /*

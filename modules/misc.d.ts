@@ -283,6 +283,43 @@ type KeyboardButtonName =
     | 'KeyboardChip.Break'
     | 'KeyboardChip.Menu';
 
+type MetadataNames =
+    | 'LongDescription'
+    | 'Date'
+    | 'Year'
+    | 'TrackNumber'
+    | 'TrackTotal'
+    | 'DiscNumber'
+    | 'DiscTotal'
+    | 'Popularity'
+    | 'SeriesPart'
+    | 'Bitrate'
+    | 'BitDepth'
+    | 'SampleRate'
+    | 'IsVariableBitRate'
+    | 'Duration'
+    | 'SeriesTitle'
+    | 'SortTitle'
+    | 'Title'
+    | 'Artist'
+    | 'Composer'
+    | 'Comment'
+    | 'Genre'
+    | 'Album'
+    | 'Group'
+    | 'OriginalArtist'
+    | 'Copyright'
+    | 'OriginalAlbum'
+    | 'Publisher'
+    | 'PublishingDate'
+    | 'AlbumArtist'
+    | 'Conductor'
+    | 'ProductId'
+    | 'SortAlbum'
+    | 'SortAlbumArtist'
+    | 'SortArtist'
+    | 'Description';
+
 type KeyboardChip = __ModuleBrand & {
     GetButton(name: KeyboardButtonName): InputSource;
     GetButtonAxis(negativeName: KeyboardButtonName, positiveName: KeyboardButtonName): InputSource;
@@ -297,6 +334,8 @@ type MagneticConnector = __ModuleBrand & {
      * True if the connector is connected to another one. False otherwise.
      */
     readonly IsConnected: boolean;
+
+    readonly AttachedConnector: MagneticConnector;
 };
 
 type PowerButton = __ModuleBrand & {
@@ -334,6 +373,32 @@ type RealityChip = __ModuleBrand & {
          */
         TotalReceived: number;
     };
+    /**
+     * Array containing all the assets currently loaded from the Documents/My Games/Retro/UserData folder.
+     */
+    readonly LoadedAssets: { [k: string]: Asset };
+    GetDateTime(): RealityChipDateTime;
+    GetDateTimeUTC(): RealityChipDateTime;
+    LoadAudioSample(filename: string): AudioSample;
+    /**
+     * Array containing all the assets currently loaded from the Documents/My Games/Retro/UserData folder.
+     */
+    LoadSpriteSheet(filename: string, spriteWidth: number, spriteHeight: number): SpriteSheet;
+    UnloadAsset(filename: string): void;
+    ListDirectory(path: string): string[];
+    GetFileMetadata(filename: string): { [k: string]: any };
+};
+
+type RealityChipDateTime = {
+    year: number;
+    month: number;
+    day: number;
+    yday: number;
+    wday: number;
+    hour: number;
+    min: number;
+    sec: number;
+    isdst: boolean;
 };
 
 type RomAssets = {
@@ -373,6 +438,20 @@ type VideoChip = __ModuleBrand & {
      * The area takes in account all the displays cound to this VideoChip.
      */
     readonly Width: number;
+
+    readonly RenderBuffers: RenderBuffer[];
+
+    readonly TouchState: boolean;
+    readonly TouchDown: boolean;
+    readonly TouchUp: boolean;
+    readonly TouchPosition: vec2;
+
+    RenderOnScreens(): void;
+
+    RenderOnBuffer(index: number): void;
+
+    SetRenderBufferSize(index: number, width: number, height: number): void;
+
     /**
      * Clears all the render area with the specified color
      */
@@ -472,6 +551,16 @@ type VideoChip = __ModuleBrand & {
         width: number,
         height: number
     ): void;
+
+    RasterRenderBuffer(
+        position1: vec2,
+        position2: vec2,
+        position3: vec2,
+        position4: vec2,
+        renderBuffer: RenderBuffer
+    ): void;
+
+    BlitPixelData(podition: vec2, pixelData: PixelData): void;
 };
 
 type Wifi = __ModuleBrand & {
@@ -522,4 +611,26 @@ type Wifi = __ModuleBrand & {
      * Only cookies that apply to this url will be removed from the cache
      */
     ClearUrlCookieCache(url: string): void;
+};
+
+type Serial = __ModuleBrand & {
+    RecieveMode: 'BinaryData' | 'Lines';
+    Port: number;
+    readonly IsActive: boolean;
+    BaudRate: number;
+    DataBits: number;
+    Parity: 'None' | 'Odd' | 'Even' | 'Mark' | 'Space';
+    StopBits: 'One' | 'OnePointFive' | 'Two';
+    WriteInt8(value: number): void;
+    WriteUInt8(value: number): void;
+    WriteInt16(value: number): void;
+    WriteUInt16(value: number): void;
+    WriteInt32(value: number): void;
+    WriteUInt32(value: number): void;
+    WriteFloat32(value: number): void;
+    WriteFloat64(value: number): void;
+    Write(data: string): void;
+    Print(text: string): void;
+    Println(text: string): void;
+    GetAvailablePorts(): number[];
 };
